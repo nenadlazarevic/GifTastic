@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>Favorite Movies</title>
+  <style type="text/css">
+    button,
+    div,
+    form,
+    input {
+      margin: 10px;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="container">
+    
+
+    <!-- Rendered Buttons will get Dumped Here  -->
+    <div id="buttons-view"></div>
+
+    <div id="topics-view"></div>
+
+    
+      <!-- Button triggers new movie to be added -->
+    
+   
+
+    <!-- Movies will Get Dumped Here -->
+    <div id="topics-view"></div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script type="text/javascript">
+
+        var topics = ["cats", 'dogs', "birds",]
+
+        $("#buttons-view").on("click", function(){
+
+            var topic = $(this).attr("data-name");
+console.log(topic)
+        // var queryURL = "https://api.giphy.com/v1/gifs/random?api_key=TGjXrufDM22m2mfyMG57QGu3Zsl3m22P&tag=cat&limit=10";
+        queryURL = "https://api.giphy.com/v1/gifs/search?q=" +
+        topic + "&api_key=TGjXrufDM22m2mfyMG57QGu3Zsl3m22P&limit=10";
+       console.log(queryURL)
+
+        $.ajax({
+           url: queryURL,
+           method: "GET"
+       })
+ .then(function(response){
+           var imageUrl = response.data
+            console.log(response)
+            for (var i = 0; i < imageUrl.length; i++) {
+                var gifDiv = $("<div>")
+                  
+            
+            var topicsImage = $("<img>");
+
+       topicsImage.attr("src", imageUrl[i].images.fixed_height.url)
+       topicsImage.attr("alt", "image");
+
+       gifDiv.prepend(topicsImage)
+        $("#topics-view").prepend(gifDiv)
+
+            }
+ 
+           
+ }) 
+           
+       })
+    //    } 
+    //    displayImages()
+       
+            
+// })
+
+        function renderButtons() {
+            $("#buttons-view").empty()
+
+            for ( var i = 0; i < topics.length; i++) {
+
+                var a = $("<button>");
+
+                a.addClass("topics-btn");
+                a.attr("data-name", topics[i]);
+                a.text(topics[i]);
+                $("#buttons-view").append(a)
+        
+             }
+        }
+       
+ renderButtons()
+
+
+
+
+
+
+
+
+
+        </script>
+  </div>
+</body>
+
+</html>
+
+
+
+
+
+
+
+
+
