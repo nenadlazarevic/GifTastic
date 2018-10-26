@@ -21,6 +21,9 @@
       size: 20px;
       color: red
      }
+     h5 {
+       color: white
+     }
   </style>
 </head>
 
@@ -32,12 +35,12 @@
   <div id="buttons-view" class=""></div>
       </div>
       <div class="col">
-<form id="movie-form" class="float-right mt-0">
-    <label for="movie-input"></label>
-    <input type="text" id="movie-input"><br>
+<form id="topic-form" class="float-right mt-0">
+    <label for="topic-input"></label>
+    <input type="text" id="topic-input"><br>
 
       <!-- Button triggers new movie to be added -->
-      <input id="add-movie" type="submit" value="add-Topic">
+      <input id="add-topic" type="submit" value="add-Topic">
     </form>
     </div>
     </div>
@@ -51,28 +54,29 @@
     </div>
     </div>
     </div>
-      <!-- Button triggers new movie to be added -->
-    
-   
 
-    <!-- Movies will Get Dumped Here -->
+    <button class="add">add More</button>
+      
     
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script type="text/javascript">
 
-        var topics = ["cats", 'dogs', "birds",]
-
+        var topics = ["cats", 'dogs', "birds", "goldfish", "Baboon", "beaver", "bear", "bonobo", "capybara", "caterpillar", "chiken", "frog", "eagle"]
+        
+       var topic;
+        
         function displayTopic() {
             
-            var topic = $(this).attr("data-name");
+            topic = $(this).attr("data-name");
+         
 console.log(topic)
-           
-        // var queryURL = "https://api.giphy.com/v1/gifs/random?api_key=TGjXrufDM22m2mfyMG57QGu3Zsl3m22P&tag=cat&limit=10";
+           var gifDiv = $("<div>")
+          
         queryURL = "https://api.giphy.com/v1/gifs/search?q=" +
         topic + "&api_key=TGjXrufDM22m2mfyMG57QGu3Zsl3m22P&limit=10";
        console.log(queryURL)
-       var gifDiv = $("<div>")
+       
 console.log(queryURL)
         $.ajax({
            url: queryURL,
@@ -82,23 +86,64 @@ console.log(queryURL)
            var results = response.data;
            console.log(response)
             for (var i = 0; i < results.length; i++) {
-            var p = $("<p>").text("Rating: " + results[i].rating);
             var topicsImage = $("<img>");
+            var p = $("<p>").text("Rating: " + results[i].rating);
+            var title = $("<h5>").text(results[i].title)
             topicsImage.attr("src", results[i].images.fixed_height_still.url)
             topicsImage.attr("alt", "image");
             topicsImage.attr("data-still", results[i].images.fixed_height_still.url);
             topicsImage.attr("data-animate", results[i].images.fixed_height.url)
             topicsImage.attr("data-state","still");
             topicsImage.addClass("gif")
+          
+           gifDiv.prepend(p) 
            gifDiv.prepend(topicsImage)
-           gifDiv.prepend(p)
-        $("#topics-view").prepend(gifDiv)
+           gifDiv.prepend(title)
+        $("#topics-view").html(gifDiv)
          
         
          }
             }) 
         }  
 
+function displayAdd() {
+            
+            
+console.log(topic)
+           var gifDiv = $("<div>")
+          // gifDiv.attr("class", "")
+        queryURL = "https://api.giphy.com/v1/gifs/search?q=" +
+        topic + "&api_key=TGjXrufDM22m2mfyMG57QGu3Zsl3m22P&limit=20";
+       console.log(queryURL)
+       
+console.log(queryURL)
+        $.ajax({
+           url: queryURL,
+           method: "GET"
+       })
+ .then(function(response){
+           var results = response.data;
+           console.log(response)
+            for (var i = 0; i < results.length; i++) {
+            var topicsImage = $("<img>");
+            var p = $("<p>").text("Rating: " + results[i].rating);
+            var title = $("<h5>").text(results[i].title)
+            topicsImage.attr("src", results[i].images.fixed_height_still.url)
+            topicsImage.attr("alt", "image");
+            topicsImage.attr("data-still", results[i].images.fixed_height_still.url);
+            topicsImage.attr("data-animate", results[i].images.fixed_height.url)
+            topicsImage.attr("data-state","still");
+            topicsImage.addClass("gif")
+          
+           gifDiv.prepend(p) 
+           gifDiv.prepend(topicsImage)
+           gifDiv.prepend(title)
+        $("#topics-view").append(gifDiv)
+         
+        
+         }
+            }) 
+        }  
        
 
            
@@ -117,11 +162,14 @@ console.log(queryURL)
         
              }
         }
+
+        
        
- $("#add-movie").on("click", function(evant){
+ $("#add-topic").on("click", function(evant){
      evant.preventDefault();
-     $("#movie-input").empty()
-     var topic = $("#movie-input").val().trim();
+     $("#topic-input").empty()
+     
+     var topic = $("#topic-input").val().trim();
 
      topics.push(topic)
     console.log(topics)
@@ -132,6 +180,7 @@ console.log(queryURL)
  })
 
  $(document).on("click", ".topics-btn", displayTopic);
+ $(document).on("click", ".add", displayAdd);
 
  $(document).on("click", ".gif", function(){
    var state = $(this).attr('data-state');
@@ -145,7 +194,8 @@ console.log(queryURL)
    }
 });
    
-
+var topicAdd =[]
+console.log(topicAdd);
 renderButtons()
 
 
