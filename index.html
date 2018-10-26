@@ -159,7 +159,7 @@ console.log(queryURL)
                 a.attr("data-name", topics[i]);
                 a.text(topics[i]);
                 $("#buttons-view").append(a)
-        
+                $("#topic-input").val("")
              }
         }
 
@@ -167,7 +167,6 @@ console.log(queryURL)
        
  $("#add-topic").on("click", function(evant){
      evant.preventDefault();
-     $("#topic-input").empty()
      
      var topic = $("#topic-input").val().trim();
 
